@@ -334,12 +334,14 @@ class ILTranslatorLLMOnly:
                 "    Any other placeholders like [[...]], %%...%%, %s, %d, etc."
             )
             llm_prompt_parts.append(
-                "2. Preserve the exact structure, position, and content of the above elements — do not modify spacing, punctuation, or formatting."
+                "    Code,non-translatable technical terms, proper nouns(e.g., names, dataset names)."
             )
             llm_prompt_parts.append(
-                # "3. If the input contains:Proper nouns, code, or non-translatable technical terms, retain them in the original form."
-                "3. Keep code,non-translatable technical terms in English. Proper nouns(e.g., names, places, dataset names) should stay in English. Translate all other text into Simplified Chinese (zh-CN)."
+                "2. Preserve the exact structure, position, and content of the above elements — do not modify spacing, punctuation, or formatting."
             )
+            # llm_prompt_parts.append(
+            #     "3. If the input contains:Proper nouns, code, or non-translatable technical terms, retain them in the original form."
+            # )
 
             # 4. ## Input/Output Format:
             llm_prompt_parts.append("\n## Input/Output Format:")

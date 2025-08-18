@@ -100,7 +100,7 @@ def create_parser():
     translation_group.add_argument(
         "--lang-out",
         "-lo",
-        default="zh-CN",
+        default="Simplified Chinese (zh-CN)",
         help="The code of target language.",
     )
     translation_group.add_argument(
