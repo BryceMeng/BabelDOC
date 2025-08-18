@@ -117,6 +117,9 @@ class ILTranslatorLLMOnly:
                 for page in docs.page
             ]
         )
+
+        logger.info(f"total pages: {len(docs.page)} total paragraphs: {total}")
+
         with self.translation_config.progress_monitor.stage_start(
             self.stage_name,
             total,
@@ -199,7 +202,7 @@ class ILTranslatorLLMOnly:
                 total_token_count = 0
 
                 paragraph_processd_count += len(paragraphs)
-                print(
+                logger.info(
                     f"Processed {paragraph_processd_count}/{total_paragraph_count} paragraphs on page {page.page_number}"
                 )
 
@@ -419,7 +422,7 @@ class ILTranslatorLLMOnly:
 
             llm_output = self._clean_json_output(llm_output)
 
-            logger.debug(f"LLM output: {llm_output}")
+            logger.info(f"LLM output: {llm_output}")
 
             parsed_output = json.loads(llm_output)
 
