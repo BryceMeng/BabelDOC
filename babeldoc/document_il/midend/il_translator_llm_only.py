@@ -346,7 +346,7 @@ class ILTranslatorLLMOnly:
                 '1. You will receive a JSON object with entries containing "id" and "input" fields.'
             )
             llm_prompt_parts.append(
-                '2. Your task is to translate the value of "input" into zh-CN, while applying the rules above.'
+                '2. Your task is to translate the value of "input" into Chinese, while applying the rules above.'
             )
             llm_prompt_parts.append(
                 '3. Return a new JSON object with the same "id" and the translated "output" field.'
