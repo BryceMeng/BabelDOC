@@ -122,10 +122,10 @@ class ILTranslatorLLMOnly:
             total,
         ) as pbar:
             with PriorityThreadPoolExecutor(
-                max_workers=self.translation_config.qps * 2, # bryce 2025.08.17 5->2
+                max_workers=self.translation_config.qps, # bryce 2025.08.17 5->1
             ) as executor2:
                 with PriorityThreadPoolExecutor(
-                    max_workers=self.translation_config.qps * 2, # bryce 2025.08.17 5->2
+                    max_workers=self.translation_config.qps, # bryce 2025.08.17 5->1
                 ) as executor:
                     for page in docs.page:
                         self.process_page(
@@ -185,6 +185,7 @@ class ILTranslatorLLMOnly:
                     pbar,
                     page_font_map,
                     page_xobj_font_map,
+                    self.translation_config.user_title,
                     self.translation_config.shared_context_cross_split_part.first_paragraph,
                     self.translation_config.shared_context_cross_split_part.recent_title_paragraph,
                     executor2,
@@ -201,6 +202,7 @@ class ILTranslatorLLMOnly:
                 pbar,
                 page_font_map,
                 page_xobj_font_map,
+                self.translation_config.user_title,
                 self.translation_config.shared_context_cross_split_part.first_paragraph,
                 self.translation_config.shared_context_cross_split_part.recent_title_paragraph,
                 executor2,
@@ -214,6 +216,7 @@ class ILTranslatorLLMOnly:
         pbar: tqdm | None = None,
         page_font_map: dict[str, PdfFont] = None,
         xobj_font_map: dict[int, dict[str, PdfFont]] = None,
+        user_title: str | None = None,
         title_paragraph: PdfParagraph | None = None,
         local_title_paragraph: PdfParagraph | None = None,
         executor: PriorityThreadPoolExecutor | None = None,
@@ -288,7 +291,13 @@ class ILTranslatorLLMOnly:
             # 2. ##Contextual Hints for Better Translation
             other_hints = []
             hint_idx = 1  # Start with 1 for 1-based indexing
-            if title_paragraph:
+            if user_title:
+                other_hints.append(
+                    f"{hint_idx}. User-defined title: {user_title}"
+                )
+                hint_idx += 1
+
+            if not user_title and title_paragraph:
                 other_hints.append(
                     f"{hint_idx}. First title in full text: {title_paragraph.unicode}"
                 )

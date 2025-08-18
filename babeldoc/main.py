@@ -116,6 +116,11 @@ def create_parser():
         help="QPS limit of translation service",
     )
     translation_group.add_argument(
+        "--user_title",
+        "-ut",
+        help="Doc Title set by user, help to improve translation quality.",
+    )
+    translation_group.add_argument(
         "--ignore-cache",
         action="store_true",
         help="Ignore translation cache.",
@@ -411,6 +416,7 @@ async def main():
             ocr_workaround=args.ocr_workaround,
             custom_system_prompt=args.custom_system_prompt,
             working_dir=working_dir,
+            user_title=args.user_title
         )
 
         # Create progress handler

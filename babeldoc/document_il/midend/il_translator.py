@@ -760,6 +760,7 @@ class ILTranslator:
     def generate_prompt_for_llm(
         self,
         text: str,
+        user_title:str | None = None,
         title_paragraph: PdfParagraph | None = None,
         local_title_paragraph: PdfParagraph | None = None,
         translate_input: TranslateInput | None = None,
@@ -771,11 +772,15 @@ class ILTranslator:
                 f"You are a professional and reliable machine translation engine responsible for translating the input text into {self.translation_config.lang_out}."
             ]
         llm_hint = []
-
-        if title_paragraph:
+        if user_title:
             llm_hint.append(
-                f"The first title in the full text: {title_paragraph.unicode}"
+                f"The first title in the full text: {user_title}"
             )
+        else:
+            if title_paragraph:
+                llm_hint.append(
+                    f"The first title in the full text: {title_paragraph.unicode}"
+                )
         if (
             local_title_paragraph
             and local_title_paragraph.debug_id != title_paragraph.debug_id
@@ -867,7 +872,7 @@ Now, please carefully read the following text to be translated and directly outp
                 # Perform translation
                 if self.support_llm_translate:
                     llm_prompt = self.generate_prompt_for_llm(
-                        text, title_paragraph, local_title_paragraph, translate_input
+                        text, self.translation_config.user_title, title_paragraph, local_title_paragraph, translate_input
                     )
                     llm_translate_tracker.set_input(llm_prompt)
                     translated_text = self.translate_engine.llm_translate(
