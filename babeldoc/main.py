@@ -116,7 +116,7 @@ def create_parser():
         help="QPS limit of translation service",
     )
     translation_group.add_argument(
-        "--user_title",
+        "--user-title",
         "-ut",
         help="Doc Title set by user, help to improve translation quality.",
     )
