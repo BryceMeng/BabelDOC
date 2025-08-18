@@ -176,9 +176,9 @@ class ILTranslatorLLMOnly:
                 self.shared_context_cross_split_part.recent_title_paragraph = (
                     copy.deepcopy(paragraph)
                 )
-            # llm will translate paragraphs in one prompt, so let it be 2 maximum to adapt to small LLM
+            # llm will translate paragraphs in one prompt, so let it be 1 maximum to adapt to small LLM
             # bryce 2025.08.17 5->1
-            if total_token_count > 200 or len(paragraphs) > 1:
+            if total_token_count > 200 or len(paragraphs) >= 1:
                 executor.submit(
                     self.translate_paragraph,
                     BatchParagraph(paragraphs, tracker),
