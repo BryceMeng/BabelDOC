@@ -166,9 +166,6 @@ class ILTranslatorLLMOnly:
 
         paragraphs = []
 
-        total_paragraph_count = len(page.pdf_paragraph)
-        paragraph_processd_count = 0
-
         total_token_count = 0
         for paragraph in page.pdf_paragraph:
             if paragraph.debug_id is None or paragraph.unicode is None:
@@ -200,11 +197,6 @@ class ILTranslatorLLMOnly:
                 )
                 paragraphs = []
                 total_token_count = 0
-
-                paragraph_processd_count += len(paragraphs)
-                logger.info(
-                    f"Processed {paragraph_processd_count}/{total_paragraph_count} paragraphs on page {page.page_number}"
-                )
 
 
         if paragraphs:
