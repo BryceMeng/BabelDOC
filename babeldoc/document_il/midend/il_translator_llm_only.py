@@ -426,6 +426,8 @@ class ILTranslatorLLMOnly:
 
             parsed_output = json.loads(llm_output)
 
+            logger.info(f"Parsed output: {parsed_output}")
+
             if isinstance(parsed_output, dict) and parsed_output.get(
                 "output", parsed_output.get("input", False)
             ):
