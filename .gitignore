@@ -12,6 +12,8 @@ web/dist
 web/dist-ssr
 web/*.local
 
+.history
+
 memray*
 **/*.so
 *.pdf

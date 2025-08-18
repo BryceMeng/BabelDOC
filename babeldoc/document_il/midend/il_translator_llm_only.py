@@ -122,10 +122,10 @@ class ILTranslatorLLMOnly:
             total,
         ) as pbar:
             with PriorityThreadPoolExecutor(
-                max_workers=self.translation_config.qps * 5,
+                max_workers=self.translation_config.qps * 2, # bryce 2025.08.17 5->2
             ) as executor2:
                 with PriorityThreadPoolExecutor(
-                    max_workers=self.translation_config.qps * 5,
+                    max_workers=self.translation_config.qps * 2, # bryce 2025.08.17 5->2
                 ) as executor:
                     for page in docs.page:
                         self.process_page(
@@ -176,8 +176,9 @@ class ILTranslatorLLMOnly:
                 self.shared_context_cross_split_part.recent_title_paragraph = (
                     copy.deepcopy(paragraph)
                 )
-
-            if total_token_count > 200 or len(paragraphs) > 5:
+            # llm will translate paragraphs in one prompt, so let it be 2 maximum to adapt to small LLM
+            # bryce 2025.08.17 5->1
+            if total_token_count > 200 or len(paragraphs) > 1:
                 executor.submit(
                     self.translate_paragraph,
                     BatchParagraph(paragraphs, tracker),

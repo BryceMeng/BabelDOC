@@ -198,7 +198,8 @@ class OpenAITranslator(BaseTranslator):
             http_client=httpx.Client(
                 limits=httpx.Limits(
                     max_connections=None, max_keepalive_connections=None
-                )
+                ),
+                timeout=1800
             ),
         )
         self.add_cache_impact_parameters("temperature", self.options["temperature"])
