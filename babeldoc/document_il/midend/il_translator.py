@@ -817,7 +817,11 @@ class ILTranslator:
 
         # Create a structured prompt template for LLM translation
         llm_input.append(
-            f'1. Do not translate style tags, such as "{rich_text_left_placeholder}xxx{rich_text_right_placeholder}"!'
+            f'1. Do not translate style tags themselvs, such as "{rich_text_left_placeholder}xxx{rich_text_right_placeholder}"!'
+        )
+
+        llm_input.append(
+            "2. Translate the text inside these tags, as well as any other normal text, into Simplified Chinese (zh-CN)."
         )
 
         formula_placeholder = self.translate_engine.get_formular_placeholder(3)
@@ -825,16 +829,16 @@ class ILTranslator:
             formula_placeholder = formula_placeholder[0]
 
         llm_input.append(
-            f'2. Do not translate formula placeholders, such as "{formula_placeholder}". The system will automatically replace the placeholders with the corresponding formulas.'
+            f'3. Do not translate formula placeholders, such as "{formula_placeholder}". The system will automatically replace the placeholders with the corresponding formulas.'
         )
         llm_input.append(
             # "3. If there is no need to translate (such as proper nouns, codes, etc.), then return the original text."
-            "3. Do not translate code,non-translatable technical terms, proper nouns(e.g., names, dataset names)."
+            "4. Do not translate code,non-translatable technical terms, proper nouns(e.g., names, dataset names)."
         )
         llm_input.append(
-            "4. Only output the translation result without explanations and annotations."
+            "5. Only output the translation result without explanations and annotations."
         )
-        llm_input.append(f"5. Translate text into {self.translation_config.lang_out}.")
+        llm_input.append(f"6. Translate text into {self.translation_config.lang_out}.")
         prompt_template = f"""
 Now, please carefully read the following text to be translated and directly output your translation.\n\n{text}
 

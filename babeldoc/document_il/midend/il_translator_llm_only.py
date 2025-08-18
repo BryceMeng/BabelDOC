@@ -326,7 +326,7 @@ class ILTranslatorLLMOnly:
                 "1. Do NOT translate or alter any of the following elements:"
             )
             llm_prompt_parts.append(
-                "    Style or HTML-like tags: e.g., <style id='1'>...</style>, <b>...</b>, <i>...</i>, <code>...</code>, etc."
+                "    Style or HTML-like tags themselves: e.g., <style id='1'>...</style>, <b>...</b>, <i>...</i>, <code>...</code>, etc."
             )
             llm_prompt_parts.append(
                 "    Formula or variable placeholders enclosed in curly braces: e.g., {v3}, {equation_1}, {name}, etc."
@@ -338,7 +338,7 @@ class ILTranslatorLLMOnly:
                 "    Code,non-translatable technical terms, proper nouns(e.g., names, dataset names)."
             )
             llm_prompt_parts.append(
-                "2. Translate all other text into Simplified Chinese (zh-CN)."
+                "2. Translate the inside the style or HTML_like tags, as well as any other normal text, into Simplified Chinese (zh-CN)."
             )
             llm_prompt_parts.append(
                 "3. Preserve the exact structure, position, and content of the above elements — do not modify spacing, punctuation, or formatting."
