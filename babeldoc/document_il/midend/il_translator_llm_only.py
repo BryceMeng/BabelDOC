@@ -285,7 +285,8 @@ class ILTranslatorLLMOnly:
             else:
                 llm_prompt_parts.append(
                     f"You are a professional and reliable machine translation engine responsible for translating the input text into {self.translation_config.lang_out}."
-                    "When translating, strictly follow the instructions below to ensure translation quality and preserve all formatting, tags, and placeholders:\n"
+                    # "When translating, strictly follow the instructions below to ensure translation quality and preserve all formatting, tags, and placeholders:\n"
+                    'Your task: Translate the "input text into Simplified Chinese (zh-CN), while preserving the original formatting, tags, and placeholders.'
                 )
 
             # 2. ##Contextual Hints for Better Translation
@@ -337,7 +338,10 @@ class ILTranslatorLLMOnly:
                 "    Code,non-translatable technical terms, proper nouns(e.g., names, dataset names)."
             )
             llm_prompt_parts.append(
-                "2. Preserve the exact structure, position, and content of the above elements — do not modify spacing, punctuation, or formatting."
+                "2. Translate all other text into Simplified Chinese (zh-CN)."
+            )
+            llm_prompt_parts.append(
+                "3. Preserve the exact structure, position, and content of the above elements — do not modify spacing, punctuation, or formatting."
             )
             # llm_prompt_parts.append(
             #     "3. If the input contains:Proper nouns, code, or non-translatable technical terms, retain them in the original form."
@@ -366,7 +370,7 @@ class ILTranslatorLLMOnly:
             llm_prompt_parts.append("```json")
             llm_prompt_parts.append("Input:")
             llm_prompt_parts.append("{")
-            llm_prompt_parts.append('    "id": 1,')
+            llm_prompt_parts.append('    "id": 0,')
             llm_prompt_parts.append('    "input": "Source",')
             llm_prompt_parts.append('    "layout_label": "plain text",')
             llm_prompt_parts.append("    // this is optional")
@@ -379,8 +383,8 @@ class ILTranslatorLLMOnly:
             llm_prompt_parts.append("Output:")
             llm_prompt_parts.append("```json")
             llm_prompt_parts.append("{")
-            llm_prompt_parts.append('    "id": 1,')
-            llm_prompt_parts.append('    "output": "Translation"')
+            llm_prompt_parts.append('    "id": 0,')
+            llm_prompt_parts.append('    "output": "源头"')
             llm_prompt_parts.append("}")
             llm_prompt_parts.append("```")
             llm_prompt_parts.append("</example>")
