@@ -337,7 +337,8 @@ class ILTranslatorLLMOnly:
                 "2. Preserve the exact structure, position, and content of the above elements — do not modify spacing, punctuation, or formatting."
             )
             llm_prompt_parts.append(
-                "3. If the input contains:Proper nouns, code, or non-translatable technical terms, retain them in the original form."
+                # "3. If the input contains:Proper nouns, code, or non-translatable technical terms, retain them in the original form."
+                "3. Keep code,non-translatable technical terms in English. Proper nouns(e.g., names, places, dataset names) should stay in English. Translate all other text into Simplified Chinese (zh-CN)."
             )
 
             # 4. ## Input/Output Format:
@@ -346,7 +347,7 @@ class ILTranslatorLLMOnly:
                 '1. You will receive a JSON object with entries containing "id" and "input" fields.'
             )
             llm_prompt_parts.append(
-                '2. Your task is to translate the value of "input" into zh-CN, while applying the rules above.'
+                '2. Your task is to translate the value of "input" into Simplified Chinese (zh-CN), while applying the rules above.'
             )
             llm_prompt_parts.append(
                 '3. Return a new JSON object with the same "id" and the translated "output" field.'

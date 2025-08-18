@@ -828,7 +828,8 @@ class ILTranslator:
             f'2. Do not translate formula placeholders, such as "{formula_placeholder}". The system will automatically replace the placeholders with the corresponding formulas.'
         )
         llm_input.append(
-            "3. If there is no need to translate (such as proper nouns, codes, etc.), then return the original text."
+            # "3. If there is no need to translate (such as proper nouns, codes, etc.), then return the original text."
+            "3. Keep code,non-translatable technical terms in English. Proper nouns(e.g., names, places, dataset names) should stay in English. Translate all other text into Simplified Chinese (zh-CN)."
         )
         llm_input.append(
             "4. Only output the translation result without explanations and annotations."
