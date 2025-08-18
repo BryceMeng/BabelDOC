@@ -338,7 +338,7 @@ class ILTranslatorLLMOnly:
                 "    Code,non-translatable technical terms, proper nouns(e.g., names, dataset names)."
             )
             llm_prompt_parts.append(
-                "2. Translate the inside the style or HTML_like tags, as well as any other normal text, into Simplified Chinese (zh-CN)."
+                "2. Translate the text inside the style or HTML_like tags, as well as any other normal text, into Simplified Chinese (zh-CN)."
             )
             llm_prompt_parts.append(
                 "3. Preserve the exact structure, position, and content of the above elements — do not modify spacing, punctuation, or formatting."
