@@ -829,7 +829,7 @@ class ILTranslator:
         )
         llm_input.append(
             # "3. If there is no need to translate (such as proper nouns, codes, etc.), then return the original text."
-            "3. Don't translate code,non-translatable technical terms, proper nouns(e.g., names, dataset names)."
+            "3. Do not translate code,non-translatable technical terms, proper nouns(e.g., names, dataset names)."
         )
         llm_input.append(
             "4. Only output the translation result without explanations and annotations."
