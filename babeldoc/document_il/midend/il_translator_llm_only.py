@@ -419,6 +419,8 @@ class ILTranslatorLLMOnly:
 
             llm_output = self._clean_json_output(llm_output)
 
+            logger.debug(f"LLM output: {llm_output}")
+
             parsed_output = json.loads(llm_output)
 
             if isinstance(parsed_output, dict) and parsed_output.get(
@@ -566,7 +568,5 @@ class ILTranslatorLLMOnly:
             llm_output = llm_output[3:]
         if llm_output.endswith("```"):
             llm_output = llm_output[:-3]
-
-        print(llm_output)
 
         return llm_output.strip()
