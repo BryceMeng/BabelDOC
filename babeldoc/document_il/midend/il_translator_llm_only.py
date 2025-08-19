@@ -162,8 +162,8 @@ class ILTranslatorLLMOnly:
         pbar: tqdm | None = None,
         tracker: PageTranslateTracker = None,
         executor2: PriorityThreadPoolExecutor | None = None,
-        ptotal_paragraphs: Synchronized[int]|None = None,
-        pcur_paragraphs: Synchronized[int]|None = None,
+        ptotal_paragraphs: Synchronized|None = None,
+        pcur_paragraphs: Synchronized|None = None,
     ):
         self.translation_config.raise_if_cancelled()
         page_font_map = {}
@@ -240,8 +240,8 @@ class ILTranslatorLLMOnly:
         local_title_paragraph: PdfParagraph | None = None,
         executor: PriorityThreadPoolExecutor | None = None,
         paragraph_token_count: int = 0,
-        ptotal_paragraphs: Synchronized[int]|None = None,
-        pcur_paragraphs: Synchronized[int]|None = None,
+        ptotal_paragraphs: Synchronized|None = None,
+        pcur_paragraphs: Synchronized|None = None,
     ):
         """Translate a paragraph using pre and post processing functions."""
         self.translation_config.raise_if_cancelled()
