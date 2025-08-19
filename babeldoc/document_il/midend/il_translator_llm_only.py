@@ -24,7 +24,13 @@ from babeldoc.document_il.utils.priority_thread_pool_executor import (
 )
 from babeldoc.translation_config import TranslationConfig
 
+from multiprocessing import Value
+from multiprocessing.sharedctypes import Synchronized as Syn
+
 logger = logging.getLogger(__name__)
+
+total_paragraphs = Value("i", 0, lock=False)
+cur_paragraphs = Value("i", 0, lock=True)
 
 
 class BatchParagraph:
@@ -118,6 +124,7 @@ class ILTranslatorLLMOnly:
             ]
         )
 
+        total_paragraphs.value = total
         logger.info(f"total pages: {len(docs.page)} total paragraphs: {total}")
 
         with self.translation_config.progress_monitor.stage_start(
@@ -137,6 +144,8 @@ class ILTranslatorLLMOnly:
                             pbar,
                             tracker.new_page(),
                             executor2,
+                            total_paragraphs,
+                            cur_paragraphs
                         )
 
         path = self.translation_config.get_working_file_path("translate_tracking.json")
@@ -153,6 +162,8 @@ class ILTranslatorLLMOnly:
         pbar: tqdm | None = None,
         tracker: PageTranslateTracker = None,
         executor2: PriorityThreadPoolExecutor | None = None,
+        ptotal_paragraphs: Syn[int]|None = None,
+        pcur_paragraphs: Syn[int]|None = None,
     ):
         self.translation_config.raise_if_cancelled()
         page_font_map = {}
@@ -194,6 +205,8 @@ class ILTranslatorLLMOnly:
                     executor2,
                     priority=1048576 - total_token_count,
                     paragraph_token_count=total_token_count,
+                    total_paragraphs=ptotal_paragraphs,
+                    cur_paragraphs=pcur_paragraphs
                 )
                 paragraphs = []
                 total_token_count = 0
@@ -212,6 +225,8 @@ class ILTranslatorLLMOnly:
                 executor2,
                 priority=1048576 - total_token_count,
                 paragraph_token_count=total_token_count,
+                total_paragraphs=ptotal_paragraphs,
+                cur_paragraphs=pcur_paragraphs
             )
 
     def translate_paragraph(
@@ -225,6 +240,8 @@ class ILTranslatorLLMOnly:
         local_title_paragraph: PdfParagraph | None = None,
         executor: PriorityThreadPoolExecutor | None = None,
         paragraph_token_count: int = 0,
+        ptotal_paragraphs: Syn[int]|None = None,
+        pcur_paragraphs: Syn[int]|None = None,
     ):
         """Translate a paragraph using pre and post processing functions."""
         self.translation_config.raise_if_cancelled()
@@ -434,6 +451,9 @@ class ILTranslatorLLMOnly:
                 raise Exception(
                     f"Translation results length mismatch. Expected: {len(inputs)}, Got: {len(translation_results)}"
                 )
+            
+            pcur_paragraphs.value += len(translation_results)
+            logger.info(f"progress: {pcur_paragraphs.value}/{ptotal_paragraphs.value}")
 
             for id_, output in translation_results.items():
                 should_fallback = True
