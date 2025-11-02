@@ -1,3 +1,9 @@
+
+BabelDoc is a tool that converts English PDFs into Chinese PDFs with LLM-based translation only.
+I modified the prompt to greatly improve local small model performance, reducing the error rate from 30% to about 3%.
+
+## Introduction
+
 My friend said that reading English books or papers is not as fast as reading Chinese, where one can “read ten lines at a glance.”  
 This project preserves the formatting quite well when translating PDFs, but sometimes the translation quality is poor.  
 So, I wanted to modify this **BabelDoc** project to improve its translation performance.
