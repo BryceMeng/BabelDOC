@@ -1,3 +1,45 @@
+My friend said that reading English books or papers is not as fast as reading Chinese, where one can “read ten lines at a glance.”  
+This project preserves the formatting quite well when translating PDFs, but sometimes the translation quality is poor.  
+So, I wanted to modify this **BabelDoc** project to improve its translation performance.
+
+My friend wants to use a locally hosted small model for translation, but sometimes the results are particularly bad.  
+Therefore, I made some prompt modifications on **BabelDoc V0.3.54**, and the results improved significantly.
+
+## Version Selection
+
+I tested many versions.  
+After v0.3.54, newer versions adopted a keyword extraction approach that places higher demands on the LLM’s capability.  
+If a local small model is used, it becomes very slow and produces poor results.  
+So, I’m still using version **V0.3.54**.
+
+## Prompt Modification
+
+``` python
+  "1. Do NOT translate or alter any of the following elements:"
+  "    Style or HTML-like tags: e.g., <style id='1'>...</style>, <b>...</b>, <i>...</i>, <code>...</code>, etc."
+```
+
+In the prompt, there was this section.  
+After extensive testing, I found that this line is somewhat ambiguous because it does not specify whether the content inside those tags should be translated.  
+As a result, some large models may mistakenly believe that the text inside the tags should not be translated either.  
+So I added the following:
+
+``` python
+llm_prompt_parts.append(
+    "2. Translate the text inside the style or HTML_like tags, as well as any other normal text, into Simplified Chinese (zh-CN)."
+)
+```
+
+## Result
+
+The outcome surprised me:
+- **Before modification:** About **30%** of English paragraphs were not translated — some remained in English, and some were blank.
+- **After modification:** Fewer than **3%** of English paragraphs were untranslated — some remained in English, and some were blank.
+
+**Below is the original BabelDoc README**
+
+---
+
 <!-- # Yet Another Document Translator -->
 
 <div align="center">
